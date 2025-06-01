@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!--{% block title %}{{ product.name }} — описание{% endblock %}-->
+
+{% block main %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+    </div>
+    <div class="col-md-6">
+      <h2>{{ product.name }}</h2>
+      <p><strong>Цена:</strong> {{ product.price }} $</p>
+      <p><strong>Описание:</strong></p>
+      <p>{{ product.full_description }}</p>
+    </div>
+  </div>
+
+  <hr class="my-5">
+
+  <h4>Отзывы</h4>
+
+  {% if reviews %}
+    {% for review in reviews %}
+      <div class="border rounded p-3 mb-3">
+        <p><strong>{{ review.user.username }}</strong> — Оценка: {{ review.rating }}/10</p>
+        <p>{{ review.text }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Отзывов пока нет.</p>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    <hr>
+    <h5>Оставить отзыв</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_rating" class="form-label">Оценка (1-10)</label>
+        <input type="number" class="form-control" name="rating" id="id_rating" min="1" max="10" required>
+      </div>
+      <div class="mb-3">
+        <label for="id_comment" class="form-label">Комментарий</label>
+        <textarea name="comment" id="id_comment" class="form-control" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-dark">Отправить</button>
+    </form>
+  {% else %}
+    <p>Чтобы оставить отзыв, <a href="{% url 'login' %}?next={{ request.path }}">войдите в аккаунт</a>.</p>
+  {% endif %}
+</div>
+{% endblock %}

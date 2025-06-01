@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+LogIn
+{% endblock title %}
+
+
+{% block main %}
+<div class="container my-5">
+  <h2>Вход</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+      <div class="alert alert-danger">Неправильное имя пользователя или пароль</div>
+    {% endif %}
+    <div class="mb-3">
+      <label for="username" class="form-label">Имя пользователя</label>
+      <input type="text" name="username" id="username" class="form-control" required autofocus>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Пароль</label>
+      <input type="password" name="password" id="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Войти</button>
+  </form>
+</div>
+{% endblock %}

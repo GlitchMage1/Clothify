@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Catalog
+{% endblock title %}
+
+{% block main %}
+<main>
+<div class="container mt-5">
+  <div class="row">
+
+    <!-- Left column: Products -->
+    <div class="col-md-9">
+      <h2 class="mb-4">Product Catalog</h2>
+      <div class="row">
+        {% for product in products %}
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">Price: {{ product.price }}$</p>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <a href="{% url 'add_to_cart' product.id %}?next={{ request.path }}" class="btn btn-primary">Add to Cart</a>
+                  {% if product.id in favorite_products %}
+                    <a href="{% url 'remove_favorite' product.id %}?next={{ request.path }}" class="btn btn-outline-danger" title="Remove from Favorites">❤️</a>
+                  {% else %}
+                    <a href="{% url 'add_favorite' product.id %}?next={{ request.path }}" class="btn btn-outline-danger" title="Add to Favorites">🤍</a>
+                  {% endif %}
+                </div>
+
+                <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-secondary w-100">View Details</a>
+              </div>
+            </div>
+          </div>
+
+        {% empty %}
+          <p>No products found.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Right column: Categories -->
+    <div class="col-md-3">
+      <h4 class="mb-4 fw-bold">Categories</h4>
+      <div class="list-group">
+
+        <!-- "All categories" button -->
+        <a href="{% url 'catalog' %}"
+           class="list-group-item list-group-item-action {% if not selected_category %}active bg-dark text-white border-0{% else %}bg-light text-dark{% endif %}">
+          All Categories
+        </a>
+
+        <!-- Categories from database -->
+        {% for category in categories %}
+          <a href="{% url 'category_products' category.slug %}"
+             class="list-group-item list-group-item-action {% if selected_category == category %}active bg-dark text-white border-0{% else %}bg-light text-dark{% endif %}">
+            {{ category.name }}
+          </a>
+        {% empty %}
+          <div class="list-group-item">No categories available</div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</main>
+{% endblock main %}

@@ -1,0 +1,4 @@
+SECRET_KEY='django-insecure-9qxcyh_bzu848+(&3&hd&swsox2*qe31tj@m7pww^vf2aump2m'
+DEBUG=True
+SQL_ENGINE=django.db.backends.sqlite3
+SQL_DATABASE=db.sqlite3

@@ -1,0 +1,163 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+
+        {% endblock title %}
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+          crossorigin="anonymous">
+  </head>
+<body>
+
+<header>
+<nav class="navbar navbar-expand-lg" style="background-color: #ffffff; padding: 1rem;">
+  <div class="container-fluid justify-content-between">
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold" href="{% url 'index' %}" style="font-size: 1.5rem; color: #000000;">
+      CLOTHIFY
+    </a>
+
+    <!-- Burger button for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu -->
+
+    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mb-lg-0" style="font-size: 1.1rem;">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'index' %}" style="color: #000000;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'catalog' %}" style="color: #000000;">Catalog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about_us' %}" style="color: #000000;">About Us</a>
+        </li>
+        {% if not request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'login' %}">
+            <b>Log In</b>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'signup' %}">
+            <b>Sign Up</b>
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
+            Hello, {{ request.user.username }}!
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">My Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="dropdown-item">Sign Out</button>
+            </form>
+          </ul>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <!-- Favorites, Cart and Search -->
+    <div class="d-flex align-items-center">
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'favorite' %}" class="btn btn-outline-danger me-2">
+          ❤️ Favorites
+        </a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-danger me-2">
+          ❤️ Favorites
+        </a>
+      {% endif %}
+
+      <a href="{% url 'cart' %}" class="btn btn-outline-dark me-2">
+        🛒 Cart
+      </a>
+
+    <!-- Search -->
+    <form class="d-flex" role="search" action="{% url 'search' %}" method="get">
+      <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search" style="font-size: 1rem;">
+      <button class="btn btn-dark" type="submit">Search</button>
+    </form>
+
+  </div>
+</nav>
+
+    {% block slider %}
+
+    {% endblock slider %}
+</header>
+
+<main>
+    {% block main %}
+
+    {% endblock main %}
+</main>
+
+<footer>
+<footer class="bg-dark text-white py-5">
+  <div class="container">
+    <div class="row">
+      <!-- About Us -->
+      <div class="col-12 col-md-4 mb-3">
+        <h5 class="text-uppercase">About Us</h5>
+        <p>We offer stylish and quality clothing for everyone. Find the perfect look for any occasion.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-12 col-md-4 mb-3">
+        <h5 class="text-uppercase">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="{% url 'index' %}" class="text-white">Home</a></li>
+          <li><a href="{% url 'catalog' %}" class="text-white">Catalog</a></li>
+          <li><a href="{% url 'about_us' %}" class="text-white">About Us | Contacts</a></li>
+<!--          <li><a href="" class="text-white">Contacts</a></li>-->
+        </ul>
+      </div>
+
+      <!-- Social Media -->
+      <div class="col-12 col-md-4 mb-3">
+        <h5 class="text-uppercase">Follow Us</h5>
+        <div>
+          <a href="https://www.facebook.com/qs" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://x.com/Audwagh" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/Auswgh]" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer bottom -->
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <p class="small">&copy; 2025 Your Store — All rights reserved</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Footer -->
+
+</footer>
+
+<script src="https://kit.fontawesome.com/64e9ce9388.js" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
