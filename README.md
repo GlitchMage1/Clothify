@@ -1,8 +1,4 @@
 # Clothify
-It is just my first web-site made from Django.
-
-
-# Clothify
 
 Clothify is a modern and minimalistic online clothing store built with Django. It supports product browsing, categories, reviews, cart management, and admin functionality.
 
